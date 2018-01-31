@@ -6,10 +6,10 @@ data "terraform_remote_state" "k8s_cluster" {
 }
 
 provider "kubernetes" {
-  host = "${terraform_remote_state.k8cluster.k8s_endpoint}"
-  client_certificate = "${base64decode(terraform_remote_state.k8cluster.k8s_master_auth_client_certificate)}"
-  client_key = "${base64decode(terraform_remote_state.k8cluster.k8s_master_auth_client_key)}"
-  cluster_ca_certificate = "${base64decode(terraform_remote_state.k8cluster.k8s_master_auth_cluster_ca_certificate)}"
+  host = "${terraform_remote_state.k8s_cluster.k8s_endpoint}"
+  client_certificate = "${base64decode(terraform_remote_state.k8s_cluster.k8s_master_auth_client_certificate)}"
+  client_key = "${base64decode(terraform_remote_state.k8s_cluster.k8s_master_auth_client_key)}"
+  cluster_ca_certificate = "${base64decode(terraform_remote_state.k8s_cluster.k8s_master_auth_cluster_ca_certificate)}"
 }
 
 resource "kubernetes_service_account" "spring" {
