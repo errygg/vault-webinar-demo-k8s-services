@@ -15,6 +15,7 @@ data "terraform_remote_state" "k8s_cluster" {
 resource "kubernetes_service_account" "spring" {
   metadata {
     name = "spring"
+    automountServiceAccountToken = true
   }
 }
 
