@@ -18,6 +18,9 @@ resource "kubernetes_service_account" "spring" {
   }
 }
 
+/* 
+
+
 resource "kubernetes_pod" "spring-backend" {
   metadata {
     name = "spring-backend"
@@ -90,3 +93,4 @@ resource "kubernetes_service" "spring-frontend" {
     type = "LoadBalancer"
   }
 }
+*/
