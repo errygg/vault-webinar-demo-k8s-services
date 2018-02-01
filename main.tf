@@ -1,64 +1,78 @@
 provider "kubernetes" {
-  host = "${data.terraform_remote_state.k8s_cluster.k8s_endpoint}"
-  client_certificate = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_client_certificate)}"
-  client_key = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_client_key)}"
-  cluster_ca_certificate = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_cluster_ca_certificate)}"
+    host = "${data.terraform_remote_state.k8s_cluster.k8s_endpoint}"
+    client_certificate = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_client_certificate)}"
+    client_key = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_client_key)}"
+    cluster_ca_certificate = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_cluster_ca_certificate)}"
 }
 
-data "terraform_remote_state" "k8s_cluster" {
-  backend = "atlas"
-  config {
-    name = "lanceplarsenv2/vault-webinar-demo-k8s-cluster"
-  }
-}
-
-resource "kubernetes_service_account" "spring" {
-  metadata {
-    name = "spring"
-    automountServiceAccountToken = true
-  }
-}
-
-resource "kubernetes_service_account" "vault" {
-  metadata {
-    name = "vault"
-  }
-}
-
-
-resource "kubernetes_pod" "spring-frontend" {
-  metadata {
-    name = "spring-frontend"
-    labels {
-      App = "spring-frontend"
+data "terraform_remote_state"
+"k8s_cluster" {
+    backend = "atlas"
+    config {
+        name = "lanceplarsenv2/vault-webinar-demo-k8s-cluster"
     }
-  }
-  spec {
-    service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
-    container {
-      image = "lanceplarsen/spring-vault-demo-k8s"
-      image_pull_policy = "Always"
-      name  = "spring-frontend"
-      port {
-        container_port = 8080
-      }
-    }
-  }
 }
 
-resource "kubernetes_service" "spring-frontend" {
-  metadata {
-    name = "spring-frontend"
-  }
-  spec {
-    selector {
-      App = "${kubernetes_pod.spring-frontend.metadata.0.labels.App}"
+resource "kubernetes_service_account"
+"spring" {
+    metadata {
+        name = "spring"
     }
-    port {
-      port = 8080
-      target_port = 8080
-    }
-    type = "LoadBalancer"
-  }
 }
 
+resource "kubernetes_service_account"
+"vault" {
+    metadata {
+        name = "vault"
+    }
+}
+
+
+resource "kubernetes_pod"
+"spring-frontend" {
+    metadata {
+        name = "spring-frontend"
+        labels {
+            App = "spring-frontend"
+        }
+    }
+    spec {
+        service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
+        container {
+            image = "lanceplarsen/spring-vault-demo-k8s"
+            image_pull_policy = "Always"
+            name = "spring"
+            volume_mount {
+                mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
+                name = "${kubernetes_service_account.spring.default_secret_name}"
+                read_only = true
+            }
+            port {
+                container_port = 8080
+            }
+        }
+        volume {
+            name = "${kubernetes_service_account.spring.default_secret_name}"
+            secret {
+                secret_name = "${kubernetes_service_account.spring.default_secret_name}"
+            }
+        }
+    }
+}
+
+resource "kubernetes_service"
+"spring-frontend" {
+    metadata {
+        name = "spring-frontend"
+    }
+    spec {
+        selector {
+            App = "${kubernetes_pod.spring-frontend.metadata.0.labels.App}"
+        }
+        port {
+            port = 8080
+            target_port = 8080
+        }
+        type = "LoadBalancer"
+    }
+}
