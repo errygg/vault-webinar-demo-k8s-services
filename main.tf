@@ -18,6 +18,13 @@ resource "kubernetes_service_account" "spring" {
   }
 }
 
+resource "kubernetes_service_account" "vault" {
+  metadata {
+    name = "vault"
+  }
+}
+
+
 /* 
 
 
