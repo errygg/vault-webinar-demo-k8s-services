@@ -25,44 +25,6 @@ resource "kubernetes_service_account" "vault" {
 }
 
 
-/* 
-
-
-resource "kubernetes_pod" "spring-backend" {
-  metadata {
-    name = "spring-backend"
-    labels {
-      App = "spring-backend"
-    }
-  }
-  spec {
-    service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
-    container {
-      image = "lanceplarsen/spring-vault-demo"
-      image_pull_policy = "Always"
-      name  = "spring-backend"
-      port {
-        container_port = 8080
-      }
-    }
-  }
-}
-
-resource "kubernetes_service" "spring-backend" {
-  metadata {
-    name = "spring-backend"
-  }
-  spec {
-    selector {
-      App = "${kubernetes_pod.spring-backend.metadata.0.labels.App}"
-    }
-    port {
-      port = 8080
-      target_port = 8080
-    }
-  }
-}
-
 resource "kubernetes_pod" "spring-frontend" {
   metadata {
     name = "spring-frontend"
@@ -73,11 +35,11 @@ resource "kubernetes_pod" "spring-frontend" {
   spec {
     service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
     container {
-      image = "rberlind/spring-frontend:k8s-auth"
+      image = "lanceplarsen/spring-vault-demo-k8s"
       image_pull_policy = "Always"
       name  = "spring-frontend"
       port {
-        container_port = 80
+        container_port = 8080
       }
     }
   }
@@ -94,10 +56,10 @@ resource "kubernetes_service" "spring-frontend" {
       App = "${kubernetes_pod.spring-frontend.metadata.0.labels.App}"
     }
     port {
-      port = 80
-      target_port = 80
+      port = 8080
+      target_port = 8080
     }
     type = "LoadBalancer"
   }
 }
-*/
+
