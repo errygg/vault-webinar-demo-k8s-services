@@ -43,8 +43,6 @@ resource "kubernetes_pod" "spring-frontend" {
       }
     }
   }
-
-  depends_on = ["kubernetes_service.spring-backend"]
 }
 
 resource "kubernetes_service" "spring-frontend" {
