@@ -61,7 +61,7 @@ resource "kubernetes_pod" "spring-frontend" {
         volume {
             name = "${kubernetes_config_map.spring.metadata.0.name}"
             config_map {
-                name = "spring-config"
+                name = "spring"
                 items {
                     key = "config"
                     path =  "bootstrap.yaml"
@@ -89,7 +89,7 @@ resource "kubernetes_service" "spring-frontend" {
 
 resource "kubernetes_config_map" "spring" {
   metadata {
-    name = "spring-config"
+    name = "spring"
   }
   data {
     config = <<EOF
