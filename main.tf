@@ -43,6 +43,11 @@ resource "kubernetes_pod" "spring-frontend" {
                 name = "${kubernetes_service_account.spring.default_secret_name}"
                 read_only = true
             }
+            volume_mount {
+                mount_path = "/bootstrap.yaml"
+                subPath = "bootstrap.yaml"
+                name = "${kubernetes_config_map.spring.name}"
+            }
             port {
                 container_port = 8080
             }
@@ -53,6 +58,16 @@ resource "kubernetes_pod" "spring-frontend" {
                 secret_name = "${kubernetes_service_account.spring.default_secret_name}"
             }
         }
+        volume {
+            name = "${kubernetes_config_map.spring.name}"
+            configMap {
+                name = "spring"
+                items {
+                    key = "config"
+                    path =  "bootstrap.yaml"
+                }
+            }
+        }       
     }
 }
 
