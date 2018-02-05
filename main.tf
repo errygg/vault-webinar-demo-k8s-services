@@ -60,7 +60,7 @@ resource "kubernetes_pod" "spring-frontend" {
         }
         volume {
             name = "${kubernetes_config_map.spring.name}"
-            configMap {
+            config_map {
                 name = "spring"
                 items {
                     key = "config"
