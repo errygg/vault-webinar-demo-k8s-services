@@ -45,7 +45,7 @@ resource "kubernetes_pod" "spring-frontend" {
             }
             volume_mount {
                 mount_path = "/bootstrap.yaml"
-                subPath = "bootstrap.yaml"
+                sub_path = "bootstrap.yaml"
                 name = "${kubernetes_config_map.spring.name}"
             }
             port {
