@@ -72,30 +72,29 @@ resource "kubernetes_service" "spring-frontend" {
     }
 }
 
-resource "kubernetes_config_map" "example" {
+resource "kubernetes_config_map" "spring" {
   metadata {
     name = "spring-config"
   }
-
   data {
     config = <<EOF
-  ---
-    spring.cloud.vault:
-        authentication: KUBERNETES
-        kubernetes:
-            role: order
-            service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        host: 34.200.226.105
-        port: 8200
-        scheme: http
-        fail-fast: true
-        config.lifecycle.enabled: true
-        database:
-            enabled: true
-            role: order
-            backend: database
-    spring.datasource:
-        url: jdbc:postgresql://llarsenvaultdb.cihgglcplvpp.us-east-1.rds.amazonaws.com:5432/postgres
+---
+spring.cloud.vault:
+    authentication: KUBERNETES
+    kubernetes:
+        role: order
+        service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    host: 34.200.226.105
+    port: 8200
+    scheme: http
+    fail-fast: true
+    config.lifecycle.enabled: true
+    database:
+        enabled: true
+        role: order
+        backend: database
+spring.datasource:
+    url: jdbc:postgresql://llarsenvaultdb.cihgglcplvpp.us-east-1.rds.amazonaws.com:5432/postgres
 EOF
   }
 }
