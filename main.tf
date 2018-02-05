@@ -5,31 +5,27 @@ provider "kubernetes" {
     cluster_ca_certificate = "${base64decode(data.terraform_remote_state.k8s_cluster.k8s_master_auth_cluster_ca_certificate)}"
 }
 
-data "terraform_remote_state"
-"k8s_cluster" {
+data "terraform_remote_state" "k8s_cluster" {
     backend = "atlas"
     config {
         name = "lanceplarsenv2/vault-webinar-demo-k8s-cluster"
     }
 }
 
-resource "kubernetes_service_account"
-"spring" {
+resource "kubernetes_service_account" "spring" {
     metadata {
         name = "spring"
     }
 }
 
-resource "kubernetes_service_account"
-"vault" {
+resource "kubernetes_service_account" "vault" {
     metadata {
         name = "vault"
     }
 }
 
 
-resource "kubernetes_pod"
-"spring-frontend" {
+resource "kubernetes_pod" "spring-frontend" {
     metadata {
         name = "spring-frontend"
         labels {
@@ -60,8 +56,7 @@ resource "kubernetes_pod"
     }
 }
 
-resource "kubernetes_service"
-"spring-frontend" {
+resource "kubernetes_service" "spring-frontend" {
     metadata {
         name = "spring-frontend"
     }
@@ -75,4 +70,32 @@ resource "kubernetes_service"
         }
         type = "LoadBalancer"
     }
+}
+
+resource "kubernetes_config_map" "example" {
+  metadata {
+    name = "spring-config"
+  }
+
+  data {
+    config = <<EOF
+  ---
+    spring.cloud.vault:
+        authentication: KUBERNETES
+        kubernetes:
+            role: order
+            service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        host: 34.200.226.105
+        port: 8200
+        scheme: http
+        fail-fast: true
+        config.lifecycle.enabled: true
+        database:
+            enabled: true
+            role: order
+            backend: database
+    spring.datasource:
+        url: jdbc:postgresql://llarsenvaultdb.cihgglcplvpp.us-east-1.rds.amazonaws.com:5432/postgres
+EOF
+  }
 }
