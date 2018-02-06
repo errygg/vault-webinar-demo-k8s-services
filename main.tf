@@ -25,50 +25,57 @@ resource "kubernetes_service_account" "vault" {
 }
 
 
-resource "kubernetes_pod" "spring-frontend" {
-    metadata {
-        name = "spring-frontend"
-        labels {
-            App = "spring-frontend"
-        }
+resource "kubernetes_replication_controller" "spring-frontend" {
+  metadata {
+    name = "spring-frontend"
+    labels {
+      App = "spring-frontend"
     }
-    spec {
-        service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
-        container {
-            image = "lanceplarsen/spring-vault-demo-k8s"
-            image_pull_policy = "Always"
-            name = "spring"
-            volume_mount {
-                mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
-                name = "${kubernetes_service_account.spring.default_secret_name}"
-                read_only = true
-            }
-            volume_mount {
-                mount_path = "/bootstrap.yaml"
-                sub_path = "bootstrap.yaml"
-                name = "${kubernetes_config_map.spring.metadata.0.name}"
-            }
-            port {
-                container_port = 8080
-            }
-        }
-        volume {
+  }
+
+  spec {
+    replicas = 1
+    selector {
+      App = "spring-frontend"
+    }
+    template {
+    service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
+    container {
+        image = "lanceplarsen/spring-vault-demo-k8s"
+        image_pull_policy = "Always"
+        name = "spring"
+        volume_mount {
+            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
             name = "${kubernetes_service_account.spring.default_secret_name}"
-            secret {
-                secret_name = "${kubernetes_service_account.spring.default_secret_name}"
+            read_only = true
+        }
+        volume_mount {
+            mount_path = "/bootstrap.yaml"
+            sub_path = "bootstrap.yaml"
+            name = "${kubernetes_config_map.spring.metadata.0.name}"
+        }
+        port {
+            container_port = 8080
+        }
+    }
+    volume {
+        name = "${kubernetes_service_account.spring.default_secret_name}"
+        secret {
+            secret_name = "${kubernetes_service_account.spring.default_secret_name}"
+        }
+    }
+    volume {
+        name = "${kubernetes_config_map.spring.metadata.0.name}"
+        config_map {
+            name = "spring"
+            items {
+                key = "config"
+                path =  "bootstrap.yaml"
             }
         }
-        volume {
-            name = "${kubernetes_config_map.spring.metadata.0.name}"
-            config_map {
-                name = "spring"
-                items {
-                    key = "config"
-                    path =  "bootstrap.yaml"
-                }
-            }
-        }       
     }
+    }
+  }
 }
 
 resource "kubernetes_service" "spring-frontend" {
@@ -77,7 +84,7 @@ resource "kubernetes_service" "spring-frontend" {
     }
     spec {
         selector {
-            App = "${kubernetes_pod.spring-frontend.metadata.0.labels.App}"
+            App = "${kubernetes_replication_controller.spring-frontend.metadata.0.labels.App}"
         }
         port {
             port = 8080
