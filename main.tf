@@ -41,7 +41,7 @@ resource "kubernetes_replication_controller" "spring-frontend" {
     template {
     service_account_name = "${kubernetes_service_account.spring.metadata.0.name}"
     container {
-        image = "lanceplarsen/spring-vault-demo-k8s"
+        image = "lanceplarsen/spring-vault-demo"
         image_pull_policy = "Always"
         name = "spring"
         volume_mount {
