@@ -34,7 +34,7 @@ resource "kubernetes_replication_controller" "spring-frontend" {
   }
 
   spec {
-    replicas = 3
+    replicas = 0
     selector {
       App = "spring-frontend"
     }
