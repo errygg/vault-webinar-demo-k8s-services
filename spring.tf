@@ -52,23 +52,6 @@ resource "kubernetes_replication_controller" "spring-frontend" {
   }
 }
 
-resource "kubernetes_service" "spring-frontend" {
-    metadata {
-        name = "spring-frontend"
-        namespace = "k8s-go"
-    }
-    spec {
-        selector {
-            App = "${kubernetes_replication_controller.spring-frontend.metadata.0.labels.App}"
-        }
-        port {
-            port = 8080
-            target_port = 8080
-        }
-        type = "LoadBalancer"
-    }
-}
-
 resource "kubernetes_config_map" "spring" {
   metadata {
     name = "spring"
