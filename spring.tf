@@ -70,6 +70,7 @@ resource "kubernetes_service" "spring-frontend" {
 resource "kubernetes_config_map" "spring" {
   metadata {
     name = "spring"
+    namespace = "k8s-go"
   }
   data {
     config = <<EOF
