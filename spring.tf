@@ -1,6 +1,7 @@
 resource "kubernetes_replication_controller" "spring-frontend" {
   metadata {
     name = "spring-frontend"
+    namespace = "k8s-go"
     labels {
       App = "spring-frontend"
     }
