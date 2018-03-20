@@ -7,7 +7,7 @@ resource "kubernetes_replication_controller" "go-frontend" {
   }
 
   spec {
-    replicas = 1
+    replicas = 0
     selector {
       App = "go-frontend"
     }
