@@ -81,7 +81,7 @@ resource "kubernetes_config_map" "go" {
     server="http://34.200.226.105:8200"
     authentication="kubernetes"
     role="order"
-    service-account-token-file="/var/run/secrets/kubernetes.io/serviceaccount"
+    service-account-token-file="/var/run/secrets/kubernetes.io/serviceaccount/token"
 EOF
   }
 }
