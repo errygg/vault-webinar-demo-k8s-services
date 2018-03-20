@@ -1,6 +1,7 @@
 resource "kubernetes_replication_controller" "go-frontend" {
   metadata {
     name = "go-frontend"
+    namespace = "k8s-go"
     labels {
       App = "go-frontend"
     }
