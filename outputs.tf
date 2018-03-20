@@ -3,5 +3,5 @@ output "spring_ip" {
 }
 
 output "go_ip" {
-  value = "${kubernetes_service.gofrontend.load_balancer_ingress.0.ip}"
+  value = "${kubernetes_service.go-frontend.load_balancer_ingress.0.ip}"
 }
