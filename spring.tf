@@ -55,6 +55,7 @@ resource "kubernetes_replication_controller" "spring-frontend" {
 resource "kubernetes_service" "spring-frontend" {
     metadata {
         name = "spring-frontend"
+        namespace = "k8s-go"
     }
     spec {
         selector {
