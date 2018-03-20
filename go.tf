@@ -55,6 +55,7 @@ resource "kubernetes_replication_controller" "go-frontend" {
 resource "kubernetes_service" "go-frontend" {
     metadata {
         name = "go-frontend"
+        namespace = "k8s-go"
     }
     spec {
         selector {
