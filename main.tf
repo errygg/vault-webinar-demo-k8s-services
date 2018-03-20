@@ -4,8 +4,6 @@ provider "kubernetes" {
     password = "${var.master_password}"
 }
 
-${var.master_username}
-
 data "terraform_remote_state" "k8s_cluster" {
     backend = "atlas"
     config {
