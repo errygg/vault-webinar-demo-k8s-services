@@ -52,23 +52,6 @@ resource "kubernetes_replication_controller" "go-frontend" {
   }
 }
 
-resource "kubernetes_service" "go-frontend" {
-    metadata {
-        name = "go-frontend"
-        namespace = "k8s-go"
-    }
-    spec {
-        selector {
-            App = "${kubernetes_replication_controller.go-frontend.metadata.0.labels.App}"
-        }
-        port {
-            port = 3000
-            target_port = 3000
-        }
-        type = "LoadBalancer"
-    }
-}
-
 resource "kubernetes_config_map" "go" {
   metadata {
     name = "go"
