@@ -1,7 +1,6 @@
 provider "kubernetes" {
     host = "${var.master_hostname}"
-    username = "${var.master_username}"
-    password = "${var.master_password}"
+    token = "${var.token}"
 }
 
 data "terraform_remote_state" "k8s_cluster" {
