@@ -1,6 +1,6 @@
 provider "kubernetes" {
     host = "${var.master_hostname}"
-    username = "${var.master_usernmae}"
+    username = "${var.master_username}"
     password = "${var.master_password}"
 }
 
