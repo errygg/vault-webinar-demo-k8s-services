@@ -70,6 +70,7 @@ resource "kubernetes_service" "go-frontend" {
 resource "kubernetes_config_map" "go" {
   metadata {
     name = "go"
+    namespace = "k8s-go"
   }
   data {
     config = <<EOF
