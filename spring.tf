@@ -79,7 +79,7 @@ spring.cloud.vault:
     kubernetes:
         role: order
         service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
-    host: 34.200.226.105
+    host: 52.54.225.115
     port: 8200
     scheme: http
     fail-fast: true
