@@ -78,7 +78,7 @@ resource "kubernetes_config_map" "go" {
     name="postgres"
     role="database/creds/order"
     [vault]
-    server="http://34.200.226.105:8200"
+    server="http://52.54.225.115:8200"
     authentication="kubernetes"
     role="order"
     service-account-token-file="/var/run/secrets/kubernetes.io/serviceaccount/token"
