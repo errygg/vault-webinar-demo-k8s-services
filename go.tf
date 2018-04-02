@@ -67,8 +67,6 @@ resource "kubernetes_service" "go-frontend" {
     }
 }
 
-"${var.go_docker_container}"
-
 resource "kubernetes_config_map" "go" {
   metadata {
     name = "go"
