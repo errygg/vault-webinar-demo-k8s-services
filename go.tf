@@ -74,11 +74,11 @@ resource "kubernetes_config_map" "go" {
   data {
     config = <<EOF
     [database]
-    server="${var.postgres_host}":"${var.postgres_port}"
+    server="${var.postgres_host}:${var.postgres_port}"
     name="${var.postgres_instance}"
     role="${var.postgres_role}"
     [vault]
-    server="${var.vault_host}":"${var.vault_port}"
+    server="${var.vault_host}:${var.vault_port}"
     authentication="kubernetes"
     credential="/var/run/secrets/kubernetes.io/serviceaccount/token"
     role="${var.vault_role}"
