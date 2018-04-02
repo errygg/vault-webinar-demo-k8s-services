@@ -14,7 +14,7 @@ resource "kubernetes_replication_controller" "go-frontend" {
     template {
     service_account_name = "${kubernetes_service_account.go.metadata.0.name}"
     container {
-        image = "lanceplarsen/go-vault-demo"
+        image = "${var.go_docker_container}"
         image_pull_policy = "Always"
         name = "go"
         volume_mount {
@@ -67,6 +67,8 @@ resource "kubernetes_service" "go-frontend" {
     }
 }
 
+"${var.go_docker_container}"
+
 resource "kubernetes_config_map" "go" {
   metadata {
     name = "go"
@@ -74,14 +76,14 @@ resource "kubernetes_config_map" "go" {
   data {
     config = <<EOF
     [database]
-    server="llarsenvaultdb.cihgglcplvpp.us-east-1.rds.amazonaws.com:5432"
-    name="postgres"
-    role="database/creds/order"
+    server="${var.postgres_host}":"${var.postgres_port}"
+    name="${var.postgres_instance}"
+    role="${var.postgres_role}"
     [vault]
-    server="http://52.54.225.115:8200"
+    server="${var.vault_host}":"${var.vault_port}"
     authentication="kubernetes"
     credential="/var/run/secrets/kubernetes.io/serviceaccount/token"
-    role="order"
+    role="${var.vault_role}"
 EOF
   }
 }

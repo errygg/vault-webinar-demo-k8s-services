@@ -1,45 +1,60 @@
-variable "gcp_region" {
-  description = "GCP region, e.g. us-east1"
-  default = "us-east1"
+variable "k8s_endpoint" {
+  description = "k8s_endpoint"
 }
 
-variable "gcp_zone" {
-  description = "GCP zone, e.g. us-east1-b (which must be in gcp_region)"
-  default = "us-east1-b"
+variable "k8s_master_auth_client_certificate" {
+  description = "k8s_master_auth_client_certificate"
 }
 
-variable "gcp_project" {
-  description = "GCP project name"
+variable "k8s_master_auth_client_key" {
+  description = "k8s_master_auth_client_key"
 }
 
-variable "cluster_name" {
-  description = "Name of the K8s cluster"
+variable "k8s_master_auth_cluster_ca_certificate" {
+  description = "k8s_master_auth_cluster_ca_certificate"
 }
 
-variable "initial_node_count" {
-  description = "Number of worker VMs to initially create"
-  default = 1
+variable "vault_host" {
+  description = "vault_server"
+  default = "localhost"
 }
 
-variable "master_username" {
-  description = "Username for accessing the Kubernetes master endpoint"
+variable "vault_port" {
+  description = "vault_port"
+  default = "8200"
 }
 
-variable "master_password" {
-  description = "Password for accessing the Kubernetes master endpoint"
+variable "vault_role" {
+  description = "vault_role"
+  default = "order"
 }
 
-variable "node_machine_type" {
-  description = "GCE machine type"
-  default = "n1-standard-1"
+variable "postgres_host" {
+  description = "postgres_server"
+  default = "localhost"
 }
 
-variable "node_disk_size" {
-  description = "Node disk size in GB"
-  default = "10"
+variable "postgres_port" {
+  description = "postgres_port"
+  default = "5432"
 }
 
-variable "environment" {
-  description = "value passed to ACS Environment tag"
-  default = "dev"
+variable "postgres_instance" {
+  description = "postgres_instance"
+  default = "postgres"
+}
+
+variable "postgres_role" {
+  description = "postgres_role"
+  default = "database/creds/order"
+}
+
+variable "spring_docker_container" {
+  description = "spring_docker_container"
+  default = "lanceplarsen/spring-vault-demo"
+}
+
+variable "go_docker_container {
+  description = "go_docker_container"
+  default = "lanceplarsen/go-vault-demo"
 }
