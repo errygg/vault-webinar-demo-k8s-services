@@ -77,19 +77,19 @@ resource "kubernetes_config_map" "spring" {
 spring.cloud.vault:
     authentication: KUBERNETES
     kubernetes:
-        role: "${var.vault_role}"
+        role: ${var.vault_role}
         service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
-    host: "${var.vault_host}"
-    port: "${var.vault_port}"
+    host: ${var.vault_host}
+    port: ${var.vault_port}
     scheme: http
     fail-fast: true
     config.lifecycle.enabled: true
     database:
         enabled: true
-        role: "${var.postgres_role}"
+        role: ${var.postgres_role}
         backend: database
 spring.datasource:
-    url: jdbc:postgresql://llarsenvaultdb.cihgglcplvpp.us-east-1.rds.amazonaws.com:5432/postgres
+    url: jdbc:postgresql://${var.postgres_host}:${var.postgres_port}/postgres
 EOF
   }
 }
