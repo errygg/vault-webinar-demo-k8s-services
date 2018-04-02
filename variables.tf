@@ -54,7 +54,7 @@ variable "spring_docker_container" {
   default = "lanceplarsen/spring-vault-demo"
 }
 
-variable "go_docker_container {
+variable "go_docker_container" {
   description = "go_docker_container"
   default = "lanceplarsen/go-vault-demo"
 }
