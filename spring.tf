@@ -20,7 +20,6 @@ resource "kubernetes_replication_controller" "spring-frontend" {
         volume_mount {
             mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
             name = "${kubernetes_service_account.spring.default_secret_name}"
-            read_only = true
         }
         volume_mount {
             mount_path = "/bootstrap.yaml"
