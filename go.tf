@@ -77,7 +77,9 @@ resource "kubernetes_config_map" "go" {
     name="${var.postgres_instance}"
     role="database/creds/${var.postgres_role}"
     [vault]
-    server="http://${var.vault_host}:${var.vault_port}"
+    host="${var.vault_host}"
+    port="${var.vault_port}"
+    scheme="${var.vault_scheme}"
     authentication="kubernetes"
     credential="/var/run/secrets/kubernetes.io/serviceaccount/token"
     role="${var.vault_role}"
