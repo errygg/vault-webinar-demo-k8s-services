@@ -24,6 +24,11 @@ variable "vault_port" {
   default = "8200"
 }
 
+variable "vault_scheme" {
+  description = "scheme"
+  default = "http"
+}
+
 variable "vault_role" {
   description = "vault_role"
   default = "order"
