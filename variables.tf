@@ -14,6 +14,10 @@ variable "k8s_master_auth_cluster_ca_certificate" {
   description = "k8s_master_auth_cluster_ca_certificate"
 }
 
+variable "instance_count" {
+  default = 0
+ }
+
 variable "vault_host" {
   description = "vault_server"
   default = "localhost"
