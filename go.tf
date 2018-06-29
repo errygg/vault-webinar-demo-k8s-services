@@ -7,7 +7,7 @@ resource "kubernetes_replication_controller" "go-frontend" {
   }
 
   spec {
-    replicas = ${var.instance_count}
+    replicas = "${var.instance_count}"
     selector {
       App = "go-frontend"
     }
